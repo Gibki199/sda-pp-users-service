@@ -2,6 +2,7 @@ package com.sda.db;
 
 import com.sda.model.User;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
@@ -11,6 +12,10 @@ import org.hibernate.service.ServiceRegistry;
 public class HibernateUtils {
 
     private static SessionFactory sessionFactory;
+
+    public static Session openSession() {
+        return getSessionFactory().openSession();
+    }
 
     public static SessionFactory getSessionFactory() {
         if (sessionFactory == null) {

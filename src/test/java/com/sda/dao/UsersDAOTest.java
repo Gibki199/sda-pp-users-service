@@ -6,6 +6,7 @@ import org.hibernate.Session;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
 import java.util.UUID;
 
 class UsersDAOTest {
@@ -17,13 +18,7 @@ class UsersDAOTest {
         // given
         String expectedUsername = UUID.randomUUID().toString();
 
-        User expectedUser = User.builder()
-                .username(expectedUsername)
-                .password("password")
-                .name("name")
-                .surname("surname")
-                .email("example@email.com")
-                .age(30).build();
+        User expectedUser = createUser(expectedUsername);
 
         // when
         usersDAO.create(expectedUser);
@@ -61,13 +56,7 @@ class UsersDAOTest {
     void testDeleteByUsernameUserExist() {
         // given
         String username = UUID.randomUUID().toString();
-        User expectedUser = User.builder()
-                .username(username)
-                .password("password")
-                .name("name")
-                .surname("surname")
-                .email("example@email.com")
-                .age(30).build();
+        User expectedUser = createUser(username);
 
         usersDAO.create(expectedUser);
 
@@ -88,4 +77,34 @@ class UsersDAOTest {
         }
     }
 
+    @Test
+    void testFindAllHappyPath() {
+        // given
+        String username1 = UUID.randomUUID().toString();
+        String username2 = UUID.randomUUID().toString();
+
+        List<User> expectedUsers = List.of(createUser(username1), createUser(username2));
+
+        expectedUsers.forEach(usersDAO::create);
+
+        // when
+        List<User> actualUsers = usersDAO.findAll();
+
+        // then
+        Assertions.assertNotNull(actualUsers);
+        Assertions.assertEquals(expectedUsers.size(), actualUsers.size());
+        Assertions.assertIterableEquals(expectedUsers, actualUsers);
+    }
+
+
+    private static User createUser(String expectedUsername) {
+        User expectedUser = User.builder()
+                .username(expectedUsername)
+                .password("password")
+                .name("name")
+                .surname("surname")
+                .email("example@email.com")
+                .age(30).build();
+        return expectedUser;
+    }
 }
