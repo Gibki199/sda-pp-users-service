@@ -45,11 +45,12 @@ public class UsersDAO {
         }
     }
 
-    public void update(User updatedUser) {
+    public User update(User updatedUser) {
         try (Session session = HibernateUtils.openSession()) {
             Transaction transaction = session.beginTransaction();
             User result = session.merge(updatedUser);
             transaction.commit();
+            return result;
         }
     }
 

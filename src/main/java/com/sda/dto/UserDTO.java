@@ -1,9 +1,8 @@
 package com.sda.dto;
 
-public class UserDTO {
-    private String username;
-    private String name;
-    private String surname;
-    private Integer age;
-    private String email;
+import lombok.Builder;
+
+public record UserDTO(String username, String name, String surname, Integer age, String email) {
+
+    @Builder public UserDTO {};
 }
